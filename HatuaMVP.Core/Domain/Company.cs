@@ -4,7 +4,7 @@ using System.Text;
 
 namespace HatuaMVP.Core.Domain
 {
-    public class Corporate : EntityBase
+    public class Company : EntityBase
     {
     }
 }

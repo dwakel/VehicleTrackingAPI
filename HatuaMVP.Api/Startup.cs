@@ -13,6 +13,7 @@ using Microsoft.Extensions.Options;
 using HatuaMVP.Core;
 using HatuaMVP.Core.EF;
 using Microsoft.EntityFrameworkCore;
+using HatuaMVP.Core.Filters;
 
 namespace HatuaMVP.Api
 {
@@ -31,6 +32,9 @@ namespace HatuaMVP.Api
             services.AddDbContext<HatuaContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("HatuaConnection")));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            //Add database seeding task
+            services.AddStartupTask<SeedStartupFilter>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
