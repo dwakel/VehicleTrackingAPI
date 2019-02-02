@@ -20,5 +20,7 @@ namespace HatuaMVP.Core.Domain
         public string Username { get; set; }
 
         public string Email { get; set; }
+
+        public UserRoleValue Role { get; set; } = UserRoleValue.Admin;
     }
 }

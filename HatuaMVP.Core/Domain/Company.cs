@@ -20,6 +20,8 @@ namespace HatuaMVP.Core.Domain
 
         public string Email { get; set; }
 
+        public UserRoleValue Role { get; set; } = UserRoleValue.Company;
+
         public ApprovalStateValue AccountState { get; set; }
     }
 }
