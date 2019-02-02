@@ -11,7 +11,7 @@ namespace HatuaMVP.Api
 {
     public static class StartupTaskWebHostExtensions
     {
-        public static async Task RunWithTasksAsync(this IWebHost webHost)
+        public static async Task RunWithTasksAsync(this IWebHost webHost, CancellationToken cancellationToken = default)
         {
             // Load all tasks from DI
             var startupTasks = webHost.Services.GetServices<IStartupTask>();
@@ -19,11 +19,15 @@ namespace HatuaMVP.Api
             // Execute all the tasks
             foreach (var startupTask in startupTasks)
             {
-                //await startupTask.ExecuteAsync(cancellationToken);
+                //comment when creating controller scaffold
+                //Uncomment when running application
+                await startupTask.ExecuteAsync(cancellationToken);
             }
 
             // Start the tasks as normal
-            //await webHost.RunAsync(cancellationToken);
+            //comment when creating controller scaffold
+            //Uncomment when running application
+            await webHost.RunAsync(cancellationToken);
         }
     }
 }

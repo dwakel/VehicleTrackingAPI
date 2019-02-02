@@ -12,15 +12,19 @@ namespace HatuaMVP.Api
 {
     public class Program
     {
-        //public static async Task Main(string[] args)
-        //{
-        //    await CreateWebHostBuilder(args).Build().RunWithTasksAsync();
-        //}
-
-        public static void Main(string[] args)
+        //Comment out before adding controller scaffold
+        // else an error will be thrown
+        //Uncomment when running project
+        public static async Task Main(string[] args)
         {
-            //await CreateWebHostBuilder(args).Build().RunWithTasksAsync();
+            await CreateWebHostBuilder(args).Build().RunWithTasksAsync();
         }
+
+        //Uncomment before adding new controller scarfold
+        //Comment out when runnig project
+        //public static void Main(string[] args)
+        //{
+        //}
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
