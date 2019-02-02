@@ -11,14 +11,9 @@ namespace HatuaMVP.Core.EF
     {
         public static async void Initialize(HatuaContext context)
         {
-            //Check if Db has data in already
-            if (context.Investors.Any() ||
-                context.ServiceProviders.Any() ||
-                context.Companies.Any() ||
-                context.Admins.Any())
-            {
-                return; //Db already has data, no need for dummy data
-            }
+            //Delete a recreate database when application starts before running seeds
+            await context.Database.EnsureDeletedAsync();
+            await context.Database.EnsureCreatedAsync();
 
             #region Admin
 
@@ -83,8 +78,8 @@ namespace HatuaMVP.Core.EF
                 new Company { FirstName = "Clinton", LastName = "Mbah", Username = "company1", Email = "company1@hatua.com", PasswordHash = c1PasswordHash, PasswordSalt = c1PasswordSalt, AccountState = ApprovalStateValue.Approved }
             };
 
-            foreach (Investor i in investor)
-                context.Investors.Add(i);
+            foreach (Company c in company)
+                context.Companies.Add(c);
 
             await context.SaveChangesAsync();
 
