@@ -4,14 +4,16 @@ using HatuaMVP.Core.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HatuaMVP.Core.Migrations
 {
     [DbContext(typeof(HatuaContext))]
-    partial class HatuaContextModelSnapshot : ModelSnapshot
+    [Migration("20190203032039_CompleteRefactoring")]
+    partial class CompleteRefactoring
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
