@@ -14,6 +14,12 @@ using HatuaMVP.Core;
 using HatuaMVP.Core.EF;
 using Microsoft.EntityFrameworkCore;
 using HatuaMVP.Core.Filters;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System.Text;
+using HatuaMVP.Api.Settings;
+using HatuaMVP.Core.Services;
+using AutoMapper;
 
 namespace HatuaMVP.Api
 {
@@ -29,12 +35,56 @@ namespace HatuaMVP.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();
             services.AddDbContext<HatuaContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("HatuaConnection")));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-
+            services.AddAutoMapper();
             //Add database seeding task
             services.AddStartupTask<SeedStartupFilter>();
+
+            // configure strongly typed settings objects
+            var appSettingsSection = Configuration.GetSection("AppSettings");
+            services.Configure<AppSettings>(appSettingsSection);
+
+            // configure jwt authentication
+            var appSettings = appSettingsSection.Get<AppSettings>();
+            var key = Encoding.ASCII.GetBytes(appSettings.Secret);
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(x =>
+            {
+                x.Events = new JwtBearerEvents
+                {
+                    OnTokenValidated = context =>
+                    {
+                        var userService = context.HttpContext.RequestServices.GetRequiredService<HatuaContext>();
+                        var userId = int.Parse(context.Principal.Identity.Name);
+                        var user = userService.Users.FindAsync(userId);
+                        if (user == null)
+                        {
+                            // return unauthorized if user no longer exists
+                            context.Fail("Unauthorized");
+                        }
+                        return Task.CompletedTask;
+                    }
+                };
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
+
+            // configure DI for application services
+            services.AddScoped<IAuthenticationService, AuthenticationService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,8 +99,14 @@ namespace HatuaMVP.Api
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            app.UseCors(x => x
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
 
+            app.UseAuthentication();
             app.UseHttpsRedirection();
+
             app.UseMvc();
         }
     }
