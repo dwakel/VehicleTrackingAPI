@@ -7,31 +7,18 @@ using System.Text;
 
 namespace HatuaMVP.Core.Domain
 {
-    [Table("Admin")]
-    public class Admin : EntityBase
+    public class UserDto
     {
-        [NotMapped]
-        public string EncodedId => IDService.Encode("admn", Id);
+        public int EncodedId { get; set; }
 
-        [Required]
         public string FirstName { get; set; }
 
-        [Required]
         public string LastName { get; set; }
 
-        [Required]
         public string Username { get; set; }
 
-        [Required]
         public string Email { get; set; }
 
-        [Required]
-        public byte[] PasswordHash { get; set; }
-
-        [Required]
-        public byte[] PasswordSalt { get; set; }
-
-        [Required]
-        public UserRoleValue Role { get; set; }
+        public string Password { get; set; }
     }
 }

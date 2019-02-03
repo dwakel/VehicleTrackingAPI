@@ -10,10 +10,6 @@ namespace HatuaMVP.Core.Domain
         [Key]
         public int Id { get; set; }
 
-        public byte[] PasswordHash { get; set; }
-
-        public byte[] PasswordSalt { get; set; }
-
         public DateTimeOffset CreatedAt { get; set; }
     }
 }

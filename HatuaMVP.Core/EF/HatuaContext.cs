@@ -12,6 +12,7 @@ namespace HatuaMVP.Core.EF
         {
         }
 
+        public DbSet<User> Users { get; set; }
         public DbSet<Investor> Investors { get; set; }
         public DbSet<Company> Companies { get; set; }
         public DbSet<ServiceProvider> ServiceProviders { get; set; }
@@ -19,6 +20,7 @@ namespace HatuaMVP.Core.EF
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<User>().ToTable("User");
             modelBuilder.Entity<Investor>().ToTable("Investor");
             modelBuilder.Entity<Company>().ToTable("Company");
             modelBuilder.Entity<ServiceProvider>().ToTable("ServiceProvider");

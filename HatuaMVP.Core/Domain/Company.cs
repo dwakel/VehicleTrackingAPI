@@ -1,6 +1,7 @@
 ﻿using HatuaMVP.Core.Services;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
@@ -12,16 +13,13 @@ namespace HatuaMVP.Core.Domain
         [NotMapped]
         public string EncodedId => IDService.Encode("comp", Id);
 
-        public string FirstName { get; set; }
+        [Required]
+        public int UserId { get; set; }
 
-        public string LastName { get; set; }
+        [Required]
+        public string CompanyName { get; set; }
 
-        public string Username { get; set; }
-
-        public string Email { get; set; }
-
-        public UserRoleValue Role { get; set; } = UserRoleValue.Company;
-
+        [Required]
         public ApprovalStateValue AccountState { get; set; }
     }
 }

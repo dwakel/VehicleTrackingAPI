@@ -7,11 +7,11 @@ using System.Text;
 
 namespace HatuaMVP.Core.Domain
 {
-    [Table("Admin")]
-    public class Admin : EntityBase
+    [Table("User")]
+    public class User : EntityBase
     {
         [NotMapped]
-        public string EncodedId => IDService.Encode("admn", Id);
+        public string EncodedId => IDService.Encode("user", Id);
 
         [Required]
         public string FirstName { get; set; }
