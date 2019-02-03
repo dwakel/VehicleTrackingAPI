@@ -35,8 +35,15 @@ namespace HatuaMVP.Api.Controllers
         }
 
         [AllowAnonymous]
+        [HttpGet]
+        public ActionResult<IEnumerable<string>> Get()
+        {
+            return new string[] { "value1", "value2" };
+        }
+
+        [AllowAnonymous]
         [HttpPost("authenticate")]
-        public async Task<IActionResult> Authenticate([FromBody]UserDto input, bool rememberMe)
+        public async Task<IActionResult> Authenticate([FromBody] UserDto userDto)
         {
             #region test
 
@@ -56,7 +63,7 @@ namespace HatuaMVP.Api.Controllers
 
             #endregion test
 
-            var user = await _authenticationService.Authenticate(input.Email, input.Password);
+            var user = await _authenticationService.Authenticate(userDto.Email, userDto.Password);
 
             if (user == null)
                 return BadRequest(new { message = "Username or password is incorrect" });
