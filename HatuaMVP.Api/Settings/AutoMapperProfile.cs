@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using HatuaMVP.Api.ViewModels;
 using HatuaMVP.Core.Domain;
 
 namespace HatuaMVP.Api.Settings
