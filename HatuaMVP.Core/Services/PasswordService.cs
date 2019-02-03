@@ -25,16 +25,16 @@ namespace HatuaMVP.Core.Services
             return true;
         }
 
-        public static void GetPasswordHash(out byte[] passwordHash, byte[] salt)
-        {
-            if (salt.Length != 128)
-                throw new ArgumentException("Invalid length of password salt (128 byte expected).", "passwordHash");
+        //public static void GetPasswordHash(out byte[] passwordHash, byte[] salt)
+        //{
+        //    if (salt.Length != 128)
+        //        throw new ArgumentException("Invalid length of password salt (128 byte expected).", "passwordHash");
 
-            using (var crypt = new System.Security.Cryptography.HMACSHA512(salt))
-            {
-                passwordHash = crypt.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-            }
-        }
+        //    using (var crypt = new System.Security.Cryptography.HMACSHA512(salt))
+        //    {
+        //        passwordHash = crypt.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+        //    }
+        //}
 
         public static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
