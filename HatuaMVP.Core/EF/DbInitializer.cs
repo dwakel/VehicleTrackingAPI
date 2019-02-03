@@ -50,12 +50,14 @@ namespace HatuaMVP.Core.EF
             int iuID1 = context.Users.SingleOrDefault(user => user.Email == "investor@hatua.com").Id;
             int iuID2 = context.Users.SingleOrDefault(user => user.Email == "investor1@hatua.com").Id;
 
-            var ivestors = new Investor[]
+            var investors = new Investor[]
             {
-                new Investor { UserId = iuID1, AccountState = ApprovalStateValue.Pending },
+                new Investor { UserId = iuID1, AccountState = ApprovalStateValue.Pending, CreatedAt = DateTimeOffset.Now },
 
-                new Investor { UserId = iuID2, AccountState = ApprovalStateValue.Approved }
+                new Investor { UserId = iuID2, AccountState = ApprovalStateValue.Approved, CreatedAt = DateTimeOffset.Now }
             };
+            foreach (Investor i in investors)
+                context.Investors.Add(i);
             await context.SaveChangesAsync();
 
             #endregion Investor
@@ -81,10 +83,12 @@ namespace HatuaMVP.Core.EF
 
             var service = new ServiceProvider[]
             {
-                new ServiceProvider { UserId = suID1, AccountState = ApprovalStateValue.Pending },
+                new ServiceProvider { UserId = suID1, AccountState = ApprovalStateValue.Pending, CreatedAt = DateTimeOffset.Now },
 
-                new ServiceProvider { UserId = suID2, AccountState = ApprovalStateValue.Approved }
+                new ServiceProvider { UserId = suID2, AccountState = ApprovalStateValue.Approved, CreatedAt = DateTimeOffset.Now }
             };
+            foreach (ServiceProvider s in service)
+                context.ServiceProviders.Add(s);
             await context.SaveChangesAsync();
 
             #endregion ServiceProvider
@@ -110,10 +114,12 @@ namespace HatuaMVP.Core.EF
 
             var company = new Company[]
             {
-                new Company { UserId = suID1, AccountState = ApprovalStateValue.Pending },
+                new Company { UserId = suID1, AccountState = ApprovalStateValue.Pending, CompanyName = "CompanyName1", CreatedAt = DateTimeOffset.Now },
 
-                new Company { UserId = suID2, AccountState = ApprovalStateValue.Approved }
+                new Company { UserId = suID2, AccountState = ApprovalStateValue.Approved, CompanyName = "CompanyName2", CreatedAt = DateTimeOffset.Now }
             };
+            foreach (Company c in company)
+                context.Companies.Add(c);
             await context.SaveChangesAsync();
 
             #endregion Company
