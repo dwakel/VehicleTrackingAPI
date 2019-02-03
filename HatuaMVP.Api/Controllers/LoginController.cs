@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using HatuaMVP.Api.Settings;
+using HatuaMVP.Api.ViewModels;
 using HatuaMVP.Core.Domain;
 using HatuaMVP.Core.EF;
 using HatuaMVP.Core.Services;
@@ -19,6 +20,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace HatuaMVP.Api.Controllers
 {
+    [Produces("application/json")]
     [Route("api/[controller]")]
     [ApiController]
     public class LoginController : ControllerBase
@@ -34,7 +36,6 @@ namespace HatuaMVP.Api.Controllers
             _appSettings = appSettings.Value;
         }
 
-        [AllowAnonymous]
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
