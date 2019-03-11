@@ -1,11 +1,11 @@
-﻿using HatuaMVP.Core.Services;
+﻿using Gps.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace HatuaMVP.Api.ViewModels
+namespace Gps.Api.ViewModels
 {
     public class UserDto
     {

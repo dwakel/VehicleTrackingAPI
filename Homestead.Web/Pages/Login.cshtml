@@ -1,0 +1,39 @@
+﻿@page "/login"
+@inject HttpClient Http
+@using Homestead.Web.ViewModels
+@inject Microsoft.AspNetCore.Blazor.Services.IUriHelper UriHelper
+
+<h1>Please enter your Login credentials</h1>
+
+<form>
+    <label>Email</label>
+    <input type="text" bind="@user.Email" />
+
+    <label>Password</label>
+    <input type="password" bind="@user.Password" />
+
+    <button type="submit" onclick="@(async () => await Authenticate())">Sign In</button>
+</form>
+
+@functions {
+UserDto user = new UserDto();
+
+protected async Task Authenticate()
+{
+    await Http.SendJsonAsync(
+        HttpMethod.Post,
+        "https://localhost:5001/api/Login/authenticate",
+        user).ContinueWith(x =>
+        {
+            if (x.IsFaulted)
+            {
+                return;
+
+            }
+            UriHelper.NavigateTo("/");
+
+        });
+
+}
+
+}

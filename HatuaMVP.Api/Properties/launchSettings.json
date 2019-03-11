@@ -17,7 +17,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "HatuaMVP.Api": {
+    "Gps.Api": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "api/values",

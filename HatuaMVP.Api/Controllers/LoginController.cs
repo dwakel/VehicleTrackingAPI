@@ -5,11 +5,12 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using HatuaMVP.Api.Settings;
-using HatuaMVP.Api.ViewModels;
-using HatuaMVP.Core.Domain;
-using HatuaMVP.Core.EF;
-using HatuaMVP.Core.Services;
+using Gps.Api.Service;
+using Gps.Api.Settings;
+using Gps.Api.ViewModels;
+using Gps.Core.Domain;
+using Gps.Core.EF;
+using Gps.Core.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -18,7 +19,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
-namespace HatuaMVP.Api.Controllers
+namespace Gps.Api.Controllers
 {
     [Produces("application/json")]
     [Route("api/[controller]")]
@@ -26,14 +27,14 @@ namespace HatuaMVP.Api.Controllers
     public class LoginController : ControllerBase
     {
         private IAuthenticationService _authenticationService;
-        private readonly AppSettings _appSettings;
+        private ITokenService _token;
 
         public LoginController(
             IAuthenticationService authenticationService,
-            IOptions<AppSettings> appSettings)
+            ITokenService token)
         {
             _authenticationService = authenticationService;
-            _appSettings = appSettings.Value;
+            _token = token;
         }
 
         [HttpGet]
@@ -69,28 +70,13 @@ namespace HatuaMVP.Api.Controllers
             if (user == null)
                 return BadRequest(new { message = "Username or password is incorrect" });
 
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new Claim[]
-                {
-                    new Claim(ClaimTypes.Name, user.Id.ToString())
-                }),
-                Expires = DateTime.UtcNow.AddDays(7),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            var tokenString = tokenHandler.WriteToken(token);
-
             return Ok(new
             {
                 Id = user.EncodedId,
                 Username = user.Username,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                Role = user.Role,
-                Token = tokenString
+                Token = _token.BuildToken(user)
             });
         }
     }

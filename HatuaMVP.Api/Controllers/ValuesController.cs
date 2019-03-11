@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
-namespace HatuaMVP.Api.Controllers
+namespace Gps.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

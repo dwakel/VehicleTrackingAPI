@@ -1,4 +1,4 @@
-﻿using HatuaMVP.Core.EF;
+﻿using Gps.Core.EF;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace HatuaMVP.Core.Filters
+namespace Gps.Core.Filters
 {
     public class SeedStartupFilter : IStartupTask
     {
@@ -27,7 +27,7 @@ namespace HatuaMVP.Core.Filters
 
             try
             {
-                var context = service.GetRequiredService<HatuaContext>();
+                var context = service.GetRequiredService<GpsContext>();
                 DbInitializer.Initialize(context);
             }
             catch (Exception ex)

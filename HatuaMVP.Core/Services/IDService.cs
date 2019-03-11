@@ -2,7 +2,7 @@
 using System;
 using System.Linq;
 
-namespace HatuaMVP.Core.Services
+namespace Gps.Core.Services
 {
     public static class IDService
     {

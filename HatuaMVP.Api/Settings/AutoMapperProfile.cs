@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using HatuaMVP.Api.ViewModels;
-using HatuaMVP.Core.Domain;
+using Gps.Api.ViewModels;
+using Gps.Core.Domain;
 
-namespace HatuaMVP.Api.Settings
+namespace Gps.Api.Settings
 {
     public class AutoMapperProfile : Profile
     {

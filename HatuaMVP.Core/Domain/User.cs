@@ -1,11 +1,11 @@
-﻿using HatuaMVP.Core.Services;
+﻿using Gps.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace HatuaMVP.Core.Domain
+namespace Gps.Core.Domain
 {
     [Table("User")]
     public class User : EntityBase
@@ -30,8 +30,5 @@ namespace HatuaMVP.Core.Domain
 
         [Required]
         public byte[] PasswordSalt { get; set; }
-
-        [Required]
-        public UserRoleValue Role { get; set; }
     }
 }

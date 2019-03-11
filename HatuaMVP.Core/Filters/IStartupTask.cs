@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace HatuaMVP.Core.Filters
+namespace Gps.Core.Filters
 {
     public interface IStartupTask
     {

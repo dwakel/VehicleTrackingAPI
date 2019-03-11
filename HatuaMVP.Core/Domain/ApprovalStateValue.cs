@@ -1,4 +1,4 @@
-﻿namespace HatuaMVP.Core.Domain
+﻿namespace Gps.Core.Domain
 {
     public enum ApprovalStateValue
     {

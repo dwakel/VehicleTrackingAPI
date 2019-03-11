@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace HatuaMVP.Core.Services
+namespace Gps.Core.Services
 {
     public static class PasswordService
     {

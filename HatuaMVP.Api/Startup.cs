@@ -10,18 +10,19 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using HatuaMVP.Core;
-using HatuaMVP.Core.EF;
+using Gps.Core;
+using Gps.Core.EF;
 using Microsoft.EntityFrameworkCore;
-using HatuaMVP.Core.Filters;
+using Gps.Core.Filters;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Text;
-using HatuaMVP.Api.Settings;
-using HatuaMVP.Core.Services;
+using Gps.Api.Settings;
+using Gps.Core.Services;
 using AutoMapper;
+using Gps.Api.Service;
 
-namespace HatuaMVP.Api
+namespace Gps.Api
 {
     public class Startup
     {
@@ -35,9 +36,18 @@ namespace HatuaMVP.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors();
-            services.AddDbContext<HatuaContext>(options =>
-            options.UseSqlServer(Configuration.GetConnectionString("HatuaConnection")));
+            //services.AddCors();
+            services.AddDbContext<GpsContext>(options =>
+            options.UseSqlServer(Configuration.GetConnectionString("GpsConnection")));
+            //services.AddCors(o => o.AddPolicy("CorsPolicy", builder =>
+            //{
+            //    builder
+            //    .AllowAnyMethod()
+            //    .AllowAnyHeader()
+            //    .WithOrigins("http://localhost:4200");
+            //}));
+
+            services.AddSignalR();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddAutoMapper();
             //Add database seeding task
@@ -46,6 +56,7 @@ namespace HatuaMVP.Api
             // configure strongly typed settings objects
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<AppSettings>(appSettingsSection);
+            services.AddTransient<ITokenService, TokenService>();
 
             // configure jwt authentication
             var appSettings = appSettingsSection.Get<AppSettings>();
@@ -61,7 +72,7 @@ namespace HatuaMVP.Api
                 {
                     OnTokenValidated = context =>
                     {
-                        var userService = context.HttpContext.RequestServices.GetRequiredService<HatuaContext>();
+                        var userService = context.HttpContext.RequestServices.GetRequiredService<GpsContext>();
                         var userId = int.Parse(context.Principal.Identity.Name);
                         var user = userService.Users.FindAsync(userId);
                         if (user == null)
@@ -99,14 +110,24 @@ namespace HatuaMVP.Api
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-            app.UseCors(x => x
-                .AllowAnyOrigin()
-                .AllowAnyMethod()
-                .AllowAnyHeader());
+            //app.UseCors(x => x
+            //    .AllowAnyOrigin()
+            //    .AllowAnyMethod()
+            //    .AllowAnyHeader());
+
+            app.UseCors(builder => builder
+                    .WithOrigins("http://localhost:4200")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials()
+            );
 
             app.UseAuthentication();
             app.UseHttpsRedirection();
-
+            app.UseCors("CorsPolicy");
+            app.UseSignalR(routes =>
+                routes.MapHub<LocationHub>("/location")
+            );
             app.UseMvc();
         }
     }

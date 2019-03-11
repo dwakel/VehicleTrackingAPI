@@ -1,4 +1,4 @@
-﻿using HatuaMVP.Core.Filters;
+﻿using Gps.Core.Filters;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace HatuaMVP.Api
+namespace Gps.Api
 {
     public static class StartupTaskWebHostExtensions
     {

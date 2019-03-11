@@ -1,12 +1,12 @@
-﻿using HatuaMVP.Core.Domain;
-using HatuaMVP.Core.EF;
+﻿using Gps.Core.Domain;
+using Gps.Core.EF;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HatuaMVP.Core.Services
+namespace Gps.Core.Services
 {
     public interface IAuthenticationService
     {
@@ -15,9 +15,9 @@ namespace HatuaMVP.Core.Services
 
     public class AuthenticationService : IAuthenticationService
     {
-        private HatuaContext _context;
+        private GpsContext _context;
 
-        public AuthenticationService(HatuaContext context)
+        public AuthenticationService(GpsContext context)
         {
             _context = context;
         }

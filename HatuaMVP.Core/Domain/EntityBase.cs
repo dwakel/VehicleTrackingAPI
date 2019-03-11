@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace HatuaMVP.Core.Domain
+namespace Gps.Core.Domain
 {
     public class EntityBase
     {
