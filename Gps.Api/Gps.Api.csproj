@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\HatuaMVP.Core\Gps.Core.csproj" />
+    <ProjectReference Include="..\Gps.Core\Gps.Core.csproj" />
   </ItemGroup>
 
 </Project>
