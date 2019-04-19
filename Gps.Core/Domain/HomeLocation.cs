@@ -7,11 +7,11 @@ using System.Text;
 
 namespace Gps.Core.Domain
 {
-    [Table("Location")]
-    public class Location : EntityBase
+    [Table("HomeLocation")]
+    public class HomeLocation : EntityBase
     {
         [NotMapped]
-        public string EncodedId => IDService.Encode("loc", Id);
+        public string EncodedId => IDService.Encode("homloc", Id);
 
         [Required]
         public string Latitude { get; set; }

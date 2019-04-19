@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Gps.Api.Model
+﻿namespace Gps.Api.Model
 {
     public class Coordinates
     {

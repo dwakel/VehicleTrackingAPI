@@ -12,13 +12,19 @@ namespace Gps.Core.EF
         {
         }
 
+        public GpsContext()
+        {
+        }
+
         public DbSet<User> Users { get; set; }
         public DbSet<Location> Locations { get; set; }
+        public DbSet<HomeLocation> HomeLocations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>().ToTable("User");
             modelBuilder.Entity<Location>().ToTable("Location");
+            modelBuilder.Entity<HomeLocation>().ToTable("HomeLocation");
         }
     }
 }

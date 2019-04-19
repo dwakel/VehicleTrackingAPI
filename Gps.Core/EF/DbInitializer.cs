@@ -22,7 +22,7 @@ namespace Gps.Core.EF
 
             var investorUser = new User[]
             {
-                new User { FirstName = "Gloria", LastName = "Sekyere", Username = "Gloria", Email = "gloria@gps.com", PasswordHash = PasswordHash, PasswordSalt = PasswordSalt, CreatedAt = DateTimeOffset.Now },
+                 new User { FirstName = "Gloria", LastName = "Sekyere", Username = "Gloria", Email = "gloria@gps.com", PasswordHash = PasswordHash, PasswordSalt = PasswordSalt, CreatedAt = DateTimeOffset.Now },
             };
 
             foreach (User iu in investorUser)
@@ -32,9 +32,15 @@ namespace Gps.Core.EF
 
             int uID = context.Users.SingleOrDefault(user => user.Email == "gloria@gps.com").Id;
 
+            var homeLocation = new HomeLocation[]
+            {
+                new HomeLocation {Id = 1, Latitude = "5.628928", Longitude = "-0.112121", Distance = 300,  UserId = uID, CreatedAt = DateTimeOffset.UtcNow }
+            };
+            double distance = context.HomeLocations.SingleOrDefault(user => user.Id == uID).Distance;
+
             var locations = new Location[]
             {
-                new Location { Latitude = "5.628928", Longitude = "-0.112121", UserId = uID, CreatedAt = DateTimeOffset.UtcNow }
+                 new Location { Latitude = "5.628928", Longitude = "-0.112121", Distance = distance, UserId = uID, CreatedAt = DateTimeOffset.UtcNow }
             };
 
             foreach (Location location in locations)
