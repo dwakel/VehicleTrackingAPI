@@ -21,6 +21,7 @@ using Gps.Api.Settings;
 using Gps.Core.Services;
 using AutoMapper;
 using Gps.Api.Service;
+using SendGrid;
 
 namespace Gps.Api
 {
@@ -96,6 +97,9 @@ namespace Gps.Api
 
             // configure DI for application services
             services.AddScoped<IAuthenticationService, AuthenticationService>();
+
+            var client = new SendGridClient(Configuration["SendGrid:ApiKey"]);
+            services.AddSingleton<SendGridClient>(client);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

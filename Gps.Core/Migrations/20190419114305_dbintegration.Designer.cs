@@ -4,14 +4,16 @@ using Gps.Core.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Gps.Core.Migrations
 {
     [DbContext(typeof(GpsContext))]
-    partial class GpsContextModelSnapshot : ModelSnapshot
+    [Migration("20190419114305_dbintegration")]
+    partial class dbintegration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

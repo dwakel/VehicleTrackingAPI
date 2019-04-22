@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Gps.Api.Model;
 using Gps.Api.Service;
 using Gps.Core.EF;
+using Gps.Core.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using SendGrid;
+using SendGrid.Helpers.Mail;
 
 namespace Gps.Api.Controllers
 {
@@ -17,13 +21,16 @@ namespace Gps.Api.Controllers
     {
         private IHubContext<LocationHub, ILocationHubService> _hubContext;
         public GpsContext _db;
+        public SendGridClient _client;
         private double distance;
 
         public LocationController(
             IHubContext<LocationHub, ILocationHubService> hubContext,
+            SendGridClient client,
             GpsContext db)
         {
             _hubContext = hubContext;
+            _client = client;
             _db = db;
             this.SetDistance();
         }
@@ -31,7 +38,7 @@ namespace Gps.Api.Controllers
         private void SetDistance() => this.distance = _db.HomeLocations.SingleOrDefault().Distance;
 
         [HttpPost]
-        public string Post([FromBody]Coordinates coordinates)
+        public async Task<string> Post([FromBody]Coordinates coordinates)
         {
             string retMessage = string.Empty;
             _db.Locations.Add(
@@ -44,10 +51,30 @@ namespace Gps.Api.Controllers
                     CreatedAt = DateTimeOffset.Now
                 });
             _db.SaveChanges();
+            string text = DistanceService.CalculateDistanceVoilation(
+                this.distance,
+                 Convert.ToDouble(_db.HomeLocations.SingleOrDefault().Latitude),
+                 Convert.ToDouble(_db.HomeLocations.SingleOrDefault().Longitude),
+                 Convert.ToDouble(coordinates.Latitude),
+                 Convert.ToDouble(coordinates.Longitude));
+
+            if (!string.IsNullOrEmpty(text))
+            {
+                var msg = new SendGridMessage()
+                {
+                    From = new EmailAddress("no-reply@example.com", "CAR"),
+                    Subject = "Car Alert",
+                    PlainTextContent = text,
+                    HtmlContent = "<strong>" + text + "</strong>"
+                };
+
+                msg.AddTo(new EmailAddress(_db.Users.SingleOrDefault().Email, (_db.Users.SingleOrDefault().FirstName)));
+                var response = await _client.SendEmailAsync(msg);
+            }
 
             try
             {
-                _hubContext.Clients.All.PinpointLocation(coordinates.Latitude, coordinates.Longitude);
+                await _hubContext.Clients.All.PinpointLocation(coordinates.Latitude, coordinates.Longitude);
                 retMessage = "Success";
             }
             catch (Exception e)
@@ -72,15 +99,15 @@ namespace Gps.Api.Controllers
             return "Complete";
         }
 
-        [HttpPost]
-        public ICollection<Coordinates> History([FromBody] DateTimeOffset start, [FromBody] DateTimeOffset end)
-        {
-            var result = _db.Locations
-                .Where(date => date.CreatedAt >= start && date.CreatedAt <= end)
-                .Select(coordinates => new Coordinates { Latitude = coordinates.Latitude, Longitude = coordinates.Longitude }).ToList();
+        //[HttpPost]
+        //public ICollection<Coordinates> History([FromBody] DateTimeOffset start)
+        //{
+        //    var result = _db.Locations
+        //        .Where(date => date.CreatedAt >= start && date.CreatedAt <= end)
+        //        .Select(coordinates => new Coordinates { Latitude = coordinates.Latitude, Longitude = coordinates.Longitude }).ToList();
 
-            return result;
-        }
+        //    return result;
+        //}
 
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
