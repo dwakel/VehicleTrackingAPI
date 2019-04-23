@@ -10,6 +10,7 @@ namespace Gps.Core.Domain
     [Table("HomeLocation")]
     public class HomeLocation : EntityBase
     {
+        //Hide the actual Id value from users by encoding is
         [NotMapped]
         public string EncodedId => IDService.Encode("homloc", Id);
 

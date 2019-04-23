@@ -4,6 +4,7 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
     <LangVersion>latest</LangVersion>
+    <UserSecretsId>0d2c4e82-b5e2-4d75-ae8a-5d2c0685a4a0</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

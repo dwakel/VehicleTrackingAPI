@@ -51,6 +51,7 @@ namespace Gps.Api.Controllers
                     CreatedAt = DateTimeOffset.Now
                 });
             _db.SaveChanges();
+            //Method to check the voilation
             string text = DistanceService.CalculateDistanceVoilation(
                 this.distance,
                  Convert.ToDouble(_db.HomeLocations.SingleOrDefault().Latitude),
@@ -58,8 +59,11 @@ namespace Gps.Api.Controllers
                  Convert.ToDouble(coordinates.Latitude),
                  Convert.ToDouble(coordinates.Longitude));
 
+            //Check the voilation
+            // If it returns a null it means that the distance was voilated
             if (!string.IsNullOrEmpty(text))
             {
+                //If th distance was voilated, sends and email to client here
                 var msg = new SendGridMessage()
                 {
                     From = new EmailAddress("no-reply@example.com", "CAR"),
@@ -74,6 +78,7 @@ namespace Gps.Api.Controllers
 
             try
             {
+                //Send the actual coordinates to the web client using signalR
                 await _hubContext.Clients.All.PinpointLocation(coordinates.Latitude, coordinates.Longitude);
                 retMessage = "Success";
             }
@@ -85,19 +90,19 @@ namespace Gps.Api.Controllers
             return retMessage;
         }
 
-        [HttpPut]
-        public string Edit([FromForm] Coordinates coordinates, [FromForm] double Distance)
-        {
-            _db.HomeLocations.Update(
-                new Core.Domain.HomeLocation
-                {
-                    Id = 1,
-                    Latitude = coordinates.Latitude,
-                    Longitude = coordinates.Longitude,
-                    Distance = Distance
-                });
-            return "Complete";
-        }
+        //[HttpPut]
+        //public string Edit([FromForm] Coordinates coordinates, [FromForm] double Distance)
+        //{
+        //    _db.HomeLocations.Update(
+        //        new Core.Domain.HomeLocation
+        //        {
+        //            Id = 1,
+        //            Latitude = coordinates.Latitude,
+        //            Longitude = coordinates.Longitude,
+        //            Distance = Distance
+        //        });
+        //    return "Complete";
+        //}
 
         //[HttpPost]
         //public ICollection<Coordinates> History([FromBody] DateTimeOffset start)
@@ -109,10 +114,11 @@ namespace Gps.Api.Controllers
         //    return result;
         //}
 
+        // a simple get request just to check if the api is up and working
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
-            return new string[] { "Hello", "World" };
+            return new string[] { "Status:", "API is up and working" };
         }
     }
 }

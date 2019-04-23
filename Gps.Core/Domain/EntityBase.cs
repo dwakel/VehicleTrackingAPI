@@ -5,6 +5,10 @@ using System.Text;
 
 namespace Gps.Core.Domain
 {
+    /// <summary>
+    /// All table objects inherit from this
+    /// and implement the properties here
+    /// </summary>
     public class EntityBase
     {
         [Key]
