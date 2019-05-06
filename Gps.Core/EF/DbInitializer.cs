@@ -34,7 +34,7 @@ namespace Gps.Core.EF
 
             var homeLocations = new HomeLocation[]
             {
-                new HomeLocation {Latitude = "5.628928", Longitude = "-0.112121", Distance = 300,  UserId = uID, CreatedAt = DateTimeOffset.UtcNow }
+                new HomeLocation {Latitude = "5.759553", Longitude = "-0.220318", Distance = 300,  UserId = uID, CreatedAt = DateTimeOffset.UtcNow }
             };
             foreach (HomeLocation home in homeLocations)
                 context.HomeLocations.Add(home);
