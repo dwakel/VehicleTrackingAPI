@@ -1,7 +1,7 @@
-This is an API used to manage a car security System. This together https://github.com/dwakel/WebClient are used to monitor a vehicles location on a map. A default radius is set around a home location that a car owner chooses. Any voilation that is travelling outside the borders set by the vehicle owner will trigger an email alert to the owner of the vehicle.
+This is an API used to manage a car security System. This together https://github.com/dwakel/VehicleTrackingWebClient are used to monitor a vehicles location on a map. A default radius is set around a home location that a car owner chooses. Any voilation that is travelling outside the borders set by the vehicle owner will trigger an email alert to the owner of the vehicle.
 This API provides realtime feedback sent from the vehicle or any device that is able to hit the API endpoint. It sintantly sends the location to the Web Application for the user to view his vehicle on the map
 
-get Web App: https://github.com/dwakel/WebClient
+get Web App: https://github.com/dwakel/VehicleTrackingWebClient
 
 # Development Environment
 
